@@ -14,10 +14,7 @@ COPY scripts /opt/scripts
 # Actual build of application
 FROM builder-base AS builder
 ARG MEGA_TAG=2.1.1_Linux
-#RUN bash /opt/scripts/build.sh "${MEGA_TAG}"
-# Test data
-RUN mkdir -p /tmp/mega_install && \
-    touch /tmp/mega_install/test1.txt /tmp/mega_install/test2.txt
+RUN bash /opt/scripts/build.sh "${MEGA_TAG}"
 
 
 # Final release stage
