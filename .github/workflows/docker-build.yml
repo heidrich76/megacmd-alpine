@@ -25,14 +25,14 @@ jobs:
             -t local/megacmd:arm64 .
 
           container_id=$(docker create local/megacmd:arm64)
-          docker cp "$container_id:/build/${PREFIX}_arm64.tar.gz" ./${PREFIX}_arm64.tar.gz
+          docker cp "$container_id:/build/${PREFIX}_aarch64.tar.gz" ./${PREFIX}_aarch64.tar.gz
           docker rm "$container_id"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PREFIX }}_arm64
-          path: ${{ env.PREFIX }}_arm64.tar.gz
+          name: ${{ env.PREFIX }}_aarch64
+          path: ${{ env.PREFIX }}_aarch64.tar.gz
 
   build-amd64:
     name: Build x64 archive
@@ -51,14 +51,14 @@ jobs:
             -t local/megacmd:amd64 .
 
           container_id=$(docker create local/megacmd:amd64)
-          docker cp "$container_id:/build/${PREFIX}_amd64.tar.gz" ./${PREFIX}_amd64.tar.gz
+          docker cp "$container_id:/build/${PREFIX}_x86_64.tar.gz" ./${PREFIX}_x86_64.tar.gz
           docker rm "$container_id"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PREFIX }}_amd64
-          path: ${{ env.PREFIX }}_amd64.tar.gz
+          name: ${{ env.PREFIX }}_x86_64
+          path: ${{ env.PREFIX }}_x86_64.tar.gz
 
   release:
     name: Create GitHub Release
@@ -76,6 +76,6 @@ jobs:
           tag_name: ${{ env.TAG }}
           name: Release ${{ env.PREFIX }} ${{ env.TAG }}
           files: |
-            artifacts/${{ env.PREFIX }}_arm64/${{ env.PREFIX }}_arm64.tar.gz
-            artifacts/${{ env.PREFIX }}_amd64/${{ env.PREFIX }}_amd64.tar.gz
+            artifacts/${{ env.PREFIX }}_aarch64/${{ env.PREFIX }}_aarch64.tar.gz
+            artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.tar.gz
             
