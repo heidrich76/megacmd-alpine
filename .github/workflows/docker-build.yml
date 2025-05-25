@@ -1,6 +1,9 @@
 name: Build Archives for MEGAcmd on Alpine
 
 on:
+  push:
+    tags:
+      - '*'
   workflow_dispatch:
 
 env:
@@ -73,8 +76,8 @@ jobs:
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ env.TAG }}
-          name: Release ${{ env.PREFIX }} ${{ env.TAG }}
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ env.PREFIX }} ${{ github.ref_name }}
           files: |
             artifacts/${{ env.PREFIX }}_aarch64/${{ env.PREFIX }}_aarch64.tar.gz
             artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.tar.gz
