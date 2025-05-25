@@ -22,9 +22,9 @@ jobs:
           docker build \
             --platform linux/arm64 \
             --target final \
-            -t local/${PREFIX}:arm64 .
+            -t local/megacmd:arm64 .
 
-          container_id=$(docker create local/${PREFIX}:arm64)
+          container_id=$(docker create local/megacmd:arm64)
           docker cp "$container_id:/build/${PREFIX}_arm64.tar.gz" ./${PREFIX}_arm64.tar.gz
           docker rm "$container_id"
 
@@ -48,9 +48,9 @@ jobs:
           docker build \
             --platform linux/amd64 \
             --target final \
-            -t local/${PREFIX}:amd64 .
+            -t local/megacmd:amd64 .
 
-          container_id=$(docker create local/${PREFIX}:amd64)
+          container_id=$(docker create local/megacmd:amd64)
           docker cp "$container_id:/build/${PREFIX}_amd64.tar.gz" ./${PREFIX}_amd64.tar.gz
           docker rm "$container_id"
 
