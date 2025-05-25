@@ -1,0 +1,81 @@
+name: Build Archives for MEGAcmd on Alpine
+
+on:
+  workflow_dispatch:
+
+env:
+  PREFIX: megacmd_2.1.1_Linux_alpine
+  TAG: v2.1.1_build_0
+
+jobs:
+  build-arm64:
+    name: Build arm64 archive
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image and extract artifact
+        run: |
+          docker build \
+            --platform linux/arm64 \
+            --target final \
+            -t local/${PREFIX}:arm64 .
+
+          container_id=$(docker create local/${PREFIX}:arm64)
+          docker cp "$container_id:/build/${PREFIX}_arm64.tar.gz" ./${PREFIX}_arm64.tar.gz
+          docker rm "$container_id"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PREFIX }}_arm64
+          path: ${{ env.PREFIX }}_arm64.tar.gz
+
+  build-amd64:
+    name: Build x64 archive
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image and extract artifact
+        run: |
+          docker build \
+            --platform linux/amd64 \
+            --target final \
+            -t local/${PREFIX}:amd64 .
+
+          container_id=$(docker create local/${PREFIX}:amd64)
+          docker cp "$container_id:/build/${PREFIX}_amd64.tar.gz" ./${PREFIX}_amd64.tar.gz
+          docker rm "$container_id"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PREFIX }}_amd64
+          path: ${{ env.PREFIX }}_amd64.tar.gz
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-24.04
+    needs: [build-arm64, build-amd64]
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.TAG }}
+          name: Release ${{ env.PREFIX }} ${{ env.TAG }}
+          files: |
+            artifacts/${{ env.PREFIX }}_arm64/${{ env.PREFIX }}_arm64.tar.gz
+            artifacts/${{ env.PREFIX }}_amd64/${{ env.PREFIX }}_amd64.tar.gz
+            

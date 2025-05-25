@@ -1,0 +1,28 @@
+--- net.cpp.orig
++++ net.cpp
+@@ -276,6 +276,7 @@
+     // OPENSSL_VERSION_NUMBER could be used to skip this initialization, but
+     // since there are so many implementations of OpenSSL, I think that it's
+     // safer to provide the mutexes even if they are not really needed.
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
+     if (!CRYPTO_get_locking_callback() && !sslMutexes
+ #if OPENSSL_VERSION_NUMBER >= 0x10000000  || defined (LIBRESSL_VERSION_NUMBER)
+         && !CRYPTO_THREADID_get_callback())
+@@ -283,6 +284,7 @@
+         && !CRYPTO_get_id_callback())
+ #endif
+     {
++#endif
+         LOG_debug << "Initializing OpenSSL locking callbacks";
+         int numLocks = CRYPTO_num_locks();
+         sslMutexes = new std::recursive_mutex*[numLocks];
+@@ -293,7 +295,9 @@
+         CRYPTO_set_id_callback(CurlHttpIO::id_function);
+ #endif
+         CRYPTO_set_locking_callback(CurlHttpIO::locking_function);
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
+     }
++#endif
+ 
+ #endif
+ 

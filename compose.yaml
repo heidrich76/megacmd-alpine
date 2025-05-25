@@ -1,0 +1,9 @@
+services:
+  mega_build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final
+    container_name: megacmd-alpine
+    stdin_open: true
+    tty: true

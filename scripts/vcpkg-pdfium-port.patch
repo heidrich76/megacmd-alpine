@@ -1,0 +1,12 @@
+--- CMakeLists.txt.orig
++++ CMakeLists.txt
+@@ -1,5 +1,9 @@
+ 
+ cmake_minimum_required(VERSION 3.7.2)
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_LARGEFILE64_SOURCE")
++set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_LARGEFILE64_SOURCE")
++add_compile_options(-Wno-error=deprecated-declarations)
++
+ project(pdfium_by_cmake)
+ 
+ set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
