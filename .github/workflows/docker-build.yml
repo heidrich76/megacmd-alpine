@@ -6,6 +6,9 @@ on:
       - '*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 env:
   PREFIX: megacmd_2.1.1_Linux_alpine
 
