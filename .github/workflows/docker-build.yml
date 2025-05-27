@@ -30,7 +30,7 @@ jobs:
             -t local/megacmd:arm64 .
 
           container_id=$(docker create local/megacmd:arm64)
-          docker cp "$container_id:/build/${PREFIX}_aarch64.tar.gz" ./${PREFIX}_aarch64.tar.gz
+          docker cp "$container_id:/package/megacmd_alpine.tar.gz" ./${PREFIX}_aarch64.tar.gz
           docker rm "$container_id"
 
       - name: Upload artifact
@@ -56,7 +56,7 @@ jobs:
             -t local/megacmd:amd64 .
 
           container_id=$(docker create local/megacmd:amd64)
-          docker cp "$container_id:/build/${PREFIX}_x86_64.tar.gz" ./${PREFIX}_x86_64.tar.gz
+          docker cp "$container_id:/package/megacmd_alpine.tar.gz" ./${PREFIX}_x86_64.tar.gz
           docker rm "$container_id"
 
       - name: Upload artifact

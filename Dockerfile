@@ -19,5 +19,5 @@ RUN bash /opt/scripts/build.sh "${MEGA_TAG}"
 
 # Final release stage
 FROM builder AS final
-RUN mkdir -p /build && \
-    tar -czf /build/megacmd_${MEGA_TAG}_alpine_$(uname -m).tar.gz -C /tmp/mega_install .
+RUN mkdir -p /package && \
+  tar -czf /package/megacmd_alpine.tar.gz -C /tmp/mega_install .
