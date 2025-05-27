@@ -11,12 +11,27 @@ Archives for **arm64** and **amd64** are automatically built.
 
 ## Getting Started
 
-* **Build and start locally:**
-
+* Build image and start container:
   ```bash
   docker-compose up --build -d
+  ```
+* Start shell in container:
+  ```bash
   docker exec -it megacmd-alpine /bin/bash
   ```
+* Download and use installation packages:
+  ```bash
+  apk add --no-cache bash fuse gcompat git nano util-linux zstd
+  export BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/v2.2.1b1
+  wget "$(BASE_URL)/megacmd_alpine_v2.2.1b1_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
+    tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
+  ```
+* Start GitHub build by tagging:
+  ```bash
+  git tag -a v2.1.1b1 -m "Release v2.1.1 (Build 1)"
+  git push origin v2.1.1b1
+  ```
+
 
 
 ## Links

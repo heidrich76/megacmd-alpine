@@ -17,27 +17,30 @@ cd /MEGAcmd && git submodule update --init --recursive
 # Patch pdfium port
 # diff -u CMakeLists.txt.orig CMakeLists.txt > /opt/scripts/vcpkg-pdfium-port.patch
 cd /MEGAcmd/sdk/cmake/vcpkg_overlay_ports/pdfium && cp CMakeLists.txt CMakeLists.txt.orig
-patch CMakeLists.txt < /opt/scripts/vcpkg-pdfium-port.patch
+patch CMakeLists.txt </opt/scripts/vcpkg-pdfium-port.patch
 
 # Patch source code net.cpp
 # diff -u net.cpp.orig net.cpp > /opt/scripts/vcpkg-mega-net.patch
 cd /MEGAcmd/sdk/src/posix/ && cp net.cpp net.cpp.orig
-patch net.cpp < /opt/scripts/vcpkg-mega-net.patch
+patch net.cpp </opt/scripts/vcpkg-mega-net.patch
 
 # Patch source code MegaUpdater.cpp
 # diff -u MegaUpdater.cpp.orig MegaUpdater.cpp > /opt/scripts/vcpkg-mega-updater.patch
 cd /MEGAcmd/src/updater/ && cp MegaUpdater.cpp MegaUpdater.cpp.orig
-patch MegaUpdater.cpp < /opt/scripts/vcpkg-mega-updater.patch
+patch MegaUpdater.cpp </opt/scripts/vcpkg-mega-updater.patch
 
 # Tinyxml2 port from VCPKG must be available in MEGAcmd SDK overlay ports
 cp -r /vcpkg/ports/tinyxml2 /MEGAcmd/sdk/cmake/vcpkg_overlay_ports/
 
+# Copy new cmake file for arm64 Linux
+cp /opt/scripts/arm64-linux.cmake /MEGAcmd/sdk/cmake/vcpkg_overlay_triplets/
+
 # Determine triplet to use
 cd /MEGAcmd
 case "$(uname -m)" in
-  x86_64) triplet="-DVCPKG_TARGET_TRIPLET=x64-linux" ;;
-  aarch64) triplet="-DVCPKG_TARGET_TRIPLET=arm64-linux" ;;
-  *) triplet="" ;;
+x86_64) triplet="-DVCPKG_TARGET_TRIPLET=x64-linux-mega" ;;
+aarch64) triplet="-DVCPKG_TARGET_TRIPLET=arm64-linux" ;;
+*) triplet="" ;;
 esac
 
 # Build MEGAcmd dependencies

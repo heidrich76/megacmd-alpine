@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 env:
-  PREFIX: megacmd_2.1.1_Linux_alpine
+  PREFIX: megacmd_alpine_${{ github.ref_name }}
 
 jobs:
   build-arm64:
@@ -79,7 +79,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: Release ${{ env.PREFIX }} ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
           files: |
             artifacts/${{ env.PREFIX }}_aarch64/${{ env.PREFIX }}_aarch64.tar.gz
             artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.tar.gz
