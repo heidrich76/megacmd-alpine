@@ -19,5 +19,6 @@ RUN bash /opt/scripts/build.sh "${MEGA_TAG}"
 
 # Final release stage
 FROM builder AS final
+COPY LICENSE /tmp/mega_install/opt/megacmd/LICENSE-megacmd-alpine
 RUN mkdir -p /package && \
   tar -czf /package/megacmd_alpine.tar.gz -C /tmp/mega_install .

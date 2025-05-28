@@ -6,6 +6,8 @@ While APK packages exist for older versions, newer versions use **VCPKG** as the
 The files are provided as-is. Use them at your own risk.
 
 Archives for **arm64** and **amd64** are automatically built.
+The license for these archives is available at `/opt/megacmd/LICENSE-megacmd-alpine` inside the archives.
+This includes the licensing terms of the original MEGA software.
 
 
 
@@ -22,14 +24,14 @@ Archives for **arm64** and **amd64** are automatically built.
 * Download and use installation packages:
   ```bash
   apk add --no-cache bash fuse gcompat git nano util-linux zstd
-  export BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/v2.1.1b1
+  export BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/v2.1.1b2
   wget "$BASE_URL/megacmd_alpine_v2.1.1b1_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
     tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
   ```
 * Start GitHub build by tagging:
   ```bash
-  git tag -a v2.1.1b1 -m "Release v2.1.1 (Build 1)"
-  git push origin v2.1.1b1
+  git tag -a v2.1.1b2 -m "Release v2.1.1 (Build 2)"
+  git push origin v2.1.1b2
   ```
 
 
@@ -44,8 +46,10 @@ Archives for **arm64** and **amd64** are automatically built.
 
 
 
-## Changes to the Original Build Chain
+## Additions to the Original Build Chain
 
+* Created new Dockerfile and build scripts based on Alpine Linux.
+* Added new VCPKG overlay triplet for building on `arm64-linux`.
 * Patched the `pdfium` port overlay and added the `tinyxml2` overlay from VCPKG ports to MEGAcmd’s port overlays.
 * Patched `/MEGAcmd/src/updater/MegaUpdater.cpp` by adding missing headers required for Alpine.
 * Patched `/MEGAcmd/sdk/src/posix/net.cpp` to resolve an issue with a more recent OpenSSL version.
