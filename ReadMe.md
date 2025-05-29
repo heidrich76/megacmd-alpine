@@ -11,7 +11,7 @@ This includes the licensing terms of the original MEGA software.
 
 
 
-## Getting Started
+## Development
 
 * Build image and start container:
   ```bash
@@ -21,19 +21,31 @@ This includes the licensing terms of the original MEGA software.
   ```bash
   docker exec -it megacmd-alpine /bin/bash
   ```
-* Download and use installation packages:
-  ```bash
-  apk add --no-cache bash fuse gcompat git nano util-linux zstd
-  export BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/v2.1.1b2
-  wget "$BASE_URL/megacmd_alpine_v2.1.1b2_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
-    tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
-  uuidgen > /etc/machine-id
-  ```
 * Start GitHub build by tagging:
   ```bash
   git tag -a v2.1.1b2 -m "Release v2.1.1 (Build 2)"
   git push origin v2.1.1b2
   ```
+
+
+
+## Usage
+
+* Download and use installation packages:
+  ```bash
+  apk add --no-cache bash fuse gcompat git nano util-linux zstd && \
+    VERSION=v2.1.1b2 && \
+    BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
+    wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
+    tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
+  ```
+* Some basic usage:
+  * Login: Run `mega-cmd`, type `login <username>`, enter password, and the `exit`
+  * In order to use `mega-sync`, machine needs a unique identifier: `uuidgen > /etc/machine-id`
+  * Synchronizing folders: Run `mega-sync <local folder> <MEGA folder>`
+  * Mount MEGA folder: Run `mega-fuse-add <mount point> <MEGA folder>`
+  * Serve MEGA folder via WebDAV: `mega-webdav <MEGA folder> --public` (allows access from outside localhost)
+  * [Complete MEGAcmd user guide](https://github.com/meganz/MEGAcmd/blob/master/UserGuide.md)
 
 
 
