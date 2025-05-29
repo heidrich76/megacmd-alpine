@@ -25,7 +25,7 @@ This includes the licensing terms of the original MEGA software.
   ```bash
   apk add --no-cache bash fuse gcompat git nano util-linux zstd
   export BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/v2.1.1b2
-  wget "$BASE_URL/megacmd_alpine_v2.1.1b1_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
+  wget "$BASE_URL/megacmd_alpine_v2.1.1b2_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
     tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
   uuidgen > /etc/machine-id
   ```
