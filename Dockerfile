@@ -20,7 +20,8 @@ RUN bash /opt/scripts/build.sh "${MEGA_TAG}"
 # Final packaging stage
 FROM base AS final
 ARG MEGA_VERSION=2.1.1
-COPY --from=builder /tmp/mega_install /tmp/
+RUN mkdir -p /tmp/mega_install
+COPY --from=builder /tmp/mega_install /tmp/mega_install/
 COPY LICENSE /tmp/mega_install/opt/megacmd/LICENSE-megacmd-alpine
 COPY scripts /opt/scripts
 RUN apk add --no-cache alpine-sdk abuild patchelf
