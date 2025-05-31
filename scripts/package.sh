@@ -2,7 +2,6 @@
 set -e
 
 echo "MEGAcmd version: $1 / release $2"
-find /tmp/mega_install
 
 # Create tar.gz package for release
 mkdir -p /packages
