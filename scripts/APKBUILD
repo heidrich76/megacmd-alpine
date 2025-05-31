@@ -1,0 +1,28 @@
+pkgname=megacmd
+# Version is set by script
+pkgver=
+pkgrel=
+pkgdesc="MEGAcmd for Alpine"
+url="https://github.com/heidrich76/megacmd-alpine"
+maintainer="Jens Heidrich <jens.heidrich@gmail.com>"
+arch="$(uname -m)"
+license="BSD 2-Clause License"
+options="!check"
+
+package() {
+  mkdir -p "$pkgdir/usr"
+  mkdir -p "$pkgdir/etc"
+  mkdir -p "$pkgdir/usr/lib/megacmd"
+  mkdir -p "$pkgdir/usr/bin"
+  mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
+
+  cp -a /tmp/mega_install/usr/* "$pkgdir/usr/"
+  cp -a /tmp/mega_install/etc/* "$pkgdir/etc/"
+  cp -a /tmp/mega_install/opt/megacmd/lib/* "$pkgdir/usr/lib/megacmd/"
+  cp -f /tmp/mega_install/opt/megacmd/LICENSE-megacmd-alpine "$pkgdir/usr/share/licenses/$pkgname/"
+
+  # Set correct RPATH from /opt/megacmd/lib to /usr/lib/megacmd
+  patchelf --set-rpath /usr/lib/megacmd "$pkgdir/usr/bin/mega-cmd-server"
+  patchelf --set-rpath /usr/lib/megacmd "$pkgdir/usr/bin/mega-cmd"
+  patchelf --set-rpath /usr/lib/megacmd "$pkgdir/usr/bin/mega-exec"
+}

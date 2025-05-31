@@ -30,14 +30,17 @@ jobs:
             -t local/megacmd:arm64 .
 
           container_id=$(docker create local/megacmd:arm64)
-          docker cp "$container_id:/package/megacmd_alpine.tar.gz" ./${PREFIX}_aarch64.tar.gz
+          docker cp "$container_id:/package/megacmd-2.1.1-r0.tar.gz" ./${PREFIX}_aarch64.tar.gz
+          docker cp "$container_id:/package/megacmd-2.1.1-r0.apk" ./${PREFIX}_aarch64.apk
           docker rm "$container_id"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PREFIX }}_aarch64
-          path: ${{ env.PREFIX }}_aarch64.tar.gz
+          path: |
+            ${{ env.PREFIX }}_aarch64.tar.gz
+            ${{ env.PREFIX }}_aarch64.apk
 
   build-amd64:
     name: Build x64 archive
@@ -56,14 +59,17 @@ jobs:
             -t local/megacmd:amd64 .
 
           container_id=$(docker create local/megacmd:amd64)
-          docker cp "$container_id:/package/megacmd_alpine.tar.gz" ./${PREFIX}_x86_64.tar.gz
+          docker cp "$container_id:/package/megacmd-2.1.1-r0.tar.gz" ./${PREFIX}_x86_64.tar.gz
+          docker cp "$container_id:/package/megacmd-2.1.1-r0.apk" ./${PREFIX}_x86_64.apk
           docker rm "$container_id"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.PREFIX }}_x86_64
-          path: ${{ env.PREFIX }}_x86_64.tar.gz
+          path: |
+            ${{ env.PREFIX }}_x86_64.tar.gz
+            ${{ env.PREFIX }}_x86_64.apk
 
   release:
     name: Create GitHub Release
@@ -82,5 +88,7 @@ jobs:
           name: Release ${{ github.ref_name }}
           files: |
             artifacts/${{ env.PREFIX }}_aarch64/${{ env.PREFIX }}_aarch64.tar.gz
+            artifacts/${{ env.PREFIX }}_aarch64/${{ env.PREFIX }}_aarch64.apk
             artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.tar.gz
+            artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.apk
             

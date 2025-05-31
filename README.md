@@ -6,7 +6,7 @@ While APK packages exist for older versions, newer versions use **VCPKG** as the
 The files are provided as-is. Use them at your own risk.
 
 Archives for **arm64** and **amd64** are automatically built.
-The license for these archives is available at `/opt/megacmd/LICENSE-megacmd-alpine` inside the archives.
+The license for these archives is available at `/opt/megacmd/` for `tar.gz` releases and at `usr/share/licenses/megacmd/` for `apk` releases.
 This includes the licensing terms of the original MEGA software.
 
 
@@ -23,21 +23,28 @@ This includes the licensing terms of the original MEGA software.
   ```
 * Start GitHub build by tagging:
   ```bash
-  git tag -a v2.1.1b2 -m "Release v2.1.1 (Build 2)"
-  git push origin v2.1.1b2
+  git tag -a v2.1.1b3 -m "Release v2.1.1 (Build 3)"
+  git push origin v2.1.1b3
   ```
 
 
 
 ## Usage
 
-* Download and use installation packages:
+* Download and use installation packages `tag.gz`:
   ```bash
-  apk add --no-cache bash fuse gcompat git nano util-linux zstd && \
-    VERSION=v2.1.1b2 && \
+  apk add --no-cache fuse gcompat util-linux zstd && \
+    VERSION=v2.1.1b3 && \
     BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
-    wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
+    wget "$BASE_URL/megacmd-alpine-${VERSION}-$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
     tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
+  ```
+* Download and use installation packages `apk`:
+  ```bash
+  VERSION=v2.1.1b3 && \
+    BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
+    wget "$BASE_URL/megacmd-alpine-${VERSION}-$(uname -m).apk" -O /tmp/megacmd.apk && \
+    apk add --no-cache --allow-untrusted /tmp/megacmd.apk
   ```
 * Some basic usage:
   * Login: Run `mega-cmd`, type `login <username>`, enter password, and the `exit`
