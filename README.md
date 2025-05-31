@@ -36,14 +36,14 @@ This includes the licensing terms of the original MEGA software.
   apk add --no-cache fuse gcompat util-linux zstd && \
     VERSION=v2.1.1b3 && \
     BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
-    wget "$BASE_URL/megacmd-alpine-${VERSION}-$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
+    wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
     tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
   ```
 * Download and use installation packages `apk`:
   ```bash
   VERSION=v2.1.1b3 && \
     BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
-    wget "$BASE_URL/megacmd-alpine-${VERSION}-$(uname -m).apk" -O /tmp/megacmd.apk && \
+    wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).apk" -O /tmp/megacmd.apk && \
     apk add --no-cache --allow-untrusted /tmp/megacmd.apk
   ```
 * Some basic usage:
