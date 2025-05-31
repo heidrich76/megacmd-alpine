@@ -16,9 +16,9 @@ package() {
   mkdir -p "$pkgdir/usr/bin"
   mkdir -p "$pkgdir/usr/share/licenses/$pkgname"
 
-  cp -a /tmp/mega_install/usr/* "$pkgdir/usr/"
-  cp -a /tmp/mega_install/etc/* "$pkgdir/etc/"
-  cp -a /tmp/mega_install/opt/megacmd/lib/* "$pkgdir/usr/lib/megacmd/"
+  cp -a /tmp/mega_install/usr/. "$pkgdir/usr/"
+  cp -a /tmp/mega_install/etc/. "$pkgdir/etc/"
+  cp -a /tmp/mega_install/opt/megacmd/lib/. "$pkgdir/usr/lib/megacmd/"
   cp -f /tmp/mega_install/opt/megacmd/LICENSE-megacmd-alpine "$pkgdir/usr/share/licenses/$pkgname/"
 
   # Set correct RPATH from /opt/megacmd/lib to /usr/lib/megacmd
