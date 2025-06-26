@@ -4,6 +4,9 @@ set -e
 echo "MEGAcmd version: $1 / release $2"
 
 # Create tar.gz package for release
+export LICENSE_DIR=/tmp/mega_install/usr/share/licenses/megacmd/
+mkdir -p "$LICENSE_DIR"
+cp /opt/scripts/LICENSE "$LICENSE_DIR"
 mkdir -p /packages
 tar -czf /packages/megacmd-$1-r$2.tar.gz -C /tmp/mega_install .
 

@@ -22,7 +22,7 @@ FROM base AS final
 ARG MEGA_VERSION=2.1.1
 RUN mkdir -p /tmp/mega_install
 COPY --from=builder /tmp/mega_install /tmp/mega_install/
-COPY LICENSE /tmp/mega_install/opt/megacmd/LICENSE-megacmd-alpine
 COPY scripts /opt/scripts
+COPY LICENSE /opt/scripts/LICENSE
 RUN apk add --no-cache alpine-sdk abuild patchelf
 RUN bash /opt/scripts/package.sh "${MEGA_VERSION}" "0"

@@ -19,7 +19,7 @@ package() {
   cp -a /tmp/mega_install/usr/. "$pkgdir/usr/"
   cp -a /tmp/mega_install/etc/. "$pkgdir/etc/"
   cp -a /tmp/mega_install/opt/megacmd/lib/. "$pkgdir/usr/lib/megacmd/"
-  cp -f /tmp/mega_install/opt/megacmd/LICENSE-megacmd-alpine "$pkgdir/usr/share/licenses/$pkgname/"
+  cp -f /opt/scripts/LICENSE "$pkgdir/usr/share/licenses/megacmd/"
 
   # Set correct RPATH from /opt/megacmd/lib to /usr/lib/megacmd
   patchelf --set-rpath /usr/lib/megacmd "$pkgdir/usr/bin/mega-cmd-server"

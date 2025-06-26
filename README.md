@@ -6,7 +6,7 @@ While APK packages exist for older versions, newer versions use **VCPKG** as the
 The files are provided as-is. Use them at your own risk.
 
 Archives for **arm64** and **amd64** are automatically built.
-The license for these archives is available at `/opt/megacmd/` for `tar.gz` releases and at `usr/share/licenses/megacmd/` for `apk` releases.
+The license for these archives is available at `usr/share/licenses/megacmd/` for `tar.gz` and `apk` releases.
 This includes the licensing terms of the original MEGA software.
 
 
