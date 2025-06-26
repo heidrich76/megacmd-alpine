@@ -6,13 +6,24 @@ echo "MEGAcmd tag: $1"
 # Add recent version of ninja
 export PATH="/usr/lib/ninja-build/bin:$PATH"
 
+# Avoid deprecation warnings
+export CXXFLAGS="-Wno-deprecated-declarations"
+
 # Clone VCPKG source code und bootstrap app
-git clone --branch 2025.04.09 --single-branch https://github.com/microsoft/vcpkg.git /vcpkg
+git clone --branch 2025.06.13 --single-branch https://github.com/microsoft/vcpkg.git /vcpkg
 cd /vcpkg && ./bootstrap-vcpkg.sh
 
 # Clone MEGAcmd source code und update dependencies
 git clone --branch "$1" --single-branch --depth 1 https://github.com/meganz/MEGAcmd.git /MEGAcmd
 cd /MEGAcmd && git submodule update --init --recursive
+
+# Patch freeimage port and copy to MEGAcmd SDK overlay ports
+# diff -u PluginPSD.cpp.orig PluginPSD.cpp > /opt/scripts/vcpkg-freeimage-PluginPSD.patch
+# diff -u portfile.cmake.orig portfile.cmake > /opt/scripts/vcpkg-freeimage-portfile.patch
+cp /opt/scripts/vcpkg-freeimage-PluginPSD.patch /vcpkg/ports/freeimage
+cd /vcpkg/ports/freeimage && cp portfile.cmake portfile.cmake.orig
+patch portfile.cmake </opt/scripts/vcpkg-freeimage-portfile.patch
+cp -r /vcpkg/ports/freeimage /MEGAcmd/sdk/cmake/vcpkg_overlay_ports/
 
 # Patch pdfium port
 # diff -u CMakeLists.txt.orig CMakeLists.txt > /opt/scripts/vcpkg-pdfium-port.patch
@@ -44,7 +55,7 @@ aarch64) triplet="-DVCPKG_TARGET_TRIPLET=arm64-linux" ;;
 esac
 
 # Build MEGAcmd dependencies
-cmake -B /tmp/build/ -DCMAKE_BUILD_TYPE=Release -DUSE_FREEIMAGE=OFF $triplet
+cmake -B /tmp/build/ -DCMAKE_BUILD_TYPE=Release $triplet
 
 # Build MEGAcmd code
 cmake --build /tmp/build/
