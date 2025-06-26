@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: base
+      target: builder-base
     container_name: megacmd-alpine
     stdin_open: true
     tty: true
