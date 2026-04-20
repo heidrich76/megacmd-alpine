@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
 
-echo "MEGAcmd version: $1 / release $2"
+export MEGA_VERSION="$1"
+export MEGA_RELEASE="$2"
+
+echo "MEGAcmd version: $MEGA_VERSION / release $MEGA_RELEASE"
 
 # Create tar.gz package for release
 export LICENSE_DIR=/tmp/mega_install/usr/share/licenses/megacmd/
@@ -13,8 +16,11 @@ tar -czf /packages/megacmd-$1-r$2.tar.gz -C /tmp/mega_install .
 # Create apk file for release
 mkdir -p ~/megacmd && cd ~/megacmd
 cp /opt/scripts/APKBUILD .
-sed -i "s/^pkgver=.*/pkgver=$1/" ./APKBUILD
-sed -i "s/^pkgrel=.*/pkgrel=$2/" ./APKBUILD
+sed -i "s/^pkgver=.*/pkgver=$MEGA_VERSION/" ./APKBUILD
+sed -i "s/^pkgrel=.*/pkgrel=$MEGA_RELEASE/" ./APKBUILD
+
+# Correct line endings, if needed
+sed -i 's/\r$//' /root/megacmd/APKBUILD
 
 abuild-keygen -a -n -q
 
