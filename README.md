@@ -23,7 +23,7 @@ This includes the licensing terms of the original MEGA software.
   ```
 * Start GitHub build by tagging:
   ```bash
-  git tag -a v2.5.2b2 -m "Release v2.5.2 (Build 1)"
+  git tag -a v2.5.2b2 -m "Release v2.5.2 (Build 2)"
   git push origin v2.5.2b2
   ```
 
