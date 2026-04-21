@@ -12,7 +12,7 @@ export LICENSE_DIR=/tmp/mega_install/usr/share/licenses/megacmd/
 mkdir -p "$LICENSE_DIR"
 cp /scripts/LICENSE "$LICENSE_DIR"
 mkdir -p /packages
-tar -czf /packages/megacmd-$1-r$2.tar.gz -C /tmp/mega_install .
+tar -czf /packages/megacmd-$MEGA_VERSION-r$MEGA_RELEASE.tar.gz -C /tmp/mega_install .
 
 # Create apk file for release
 mkdir -p ~/megacmd && cd ~/megacmd
@@ -26,6 +26,6 @@ abuild-keygen -a -n -q
 # to index
 abuild -fFq || true
 
-cp ~/packages/root/$(uname -m)/megacmd-$1-r$2.apk /packages
+cp ~/packages/root/$(uname -m)/megacmd-$MEGA_VERSION-r$MEGA_RELEASE.apk /packages
 
 echo "Successfully created packages!"
