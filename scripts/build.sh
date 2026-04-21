@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-export MEGA_TAG="$1"
-export VCPKG_TAG="$2"
-
+# Read environment variables for build
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/build.env"
 echo "MEGAcmd tag: $MEGA_TAG"
 echo "VCPKG tag: $VCPKG_TAG"
 
@@ -12,7 +12,6 @@ export PATH="/usr/lib/ninja-build/bin:$PATH"
 
 # Avoid deprecation warnings
 export CXXFLAGS="-Wno-deprecated-declarations"
-
 
 # Clone VCPKG source code und bootstrap app
 git clone --branch "$VCPKG_TAG" --single-branch https://github.com/microsoft/vcpkg.git /vcpkg
@@ -23,22 +22,22 @@ git clone --branch "$MEGA_TAG" --single-branch --depth 1 https://github.com/mega
 cd /MEGAcmd && git submodule update --init --recursive
 
 # Patch freeimage port and copy to MEGAcmd SDK overlay ports
-# diff -u PluginPSD.cpp.orig PluginPSD.cpp > /opt/scripts/vcpkg-freeimage-PluginPSD.patch
-# diff -u portfile.cmake.orig portfile.cmake > /opt/scripts/vcpkg-freeimage-portfile.patch
-cp /opt/scripts/vcpkg-freeimage-PluginPSD.patch /vcpkg/ports/freeimage
+# diff -u PluginPSD.cpp.orig PluginPSD.cpp > /scripts/vcpkg-freeimage-PluginPSD.patch
+# diff -u portfile.cmake.orig portfile.cmake > /scripts/vcpkg-freeimage-portfile.patch
+cp /scripts/vcpkg-freeimage-PluginPSD.patch /vcpkg/ports/freeimage
 cd /vcpkg/ports/freeimage && cp portfile.cmake portfile.cmake.orig
-patch portfile.cmake </opt/scripts/vcpkg-freeimage-portfile.patch
+patch portfile.cmake </scripts/vcpkg-freeimage-portfile.patch
 cp -r /vcpkg/ports/freeimage /MEGAcmd/sdk/cmake/vcpkg_overlay_ports/
 
 # Patch source code net.cpp
-# diff -u net.cpp.orig net.cpp > /opt/scripts/vcpkg-mega-net.patch
+# diff -u net.cpp.orig net.cpp > /scripts/vcpkg-mega-net.patch
 cd /MEGAcmd/sdk/src/posix/ && cp net.cpp net.cpp.orig
-patch net.cpp </opt/scripts/vcpkg-mega-net.patch
+patch net.cpp </scripts/vcpkg-mega-net.patch
 
 # Patch source code MegaUpdater.cpp
-# diff -u MegaUpdater.cpp.orig MegaUpdater.cpp > /opt/scripts/vcpkg-mega-updater.patch
+# diff -u MegaUpdater.cpp.orig MegaUpdater.cpp > /scripts/vcpkg-mega-updater.patch
 cd /MEGAcmd/src/updater/ && cp MegaUpdater.cpp MegaUpdater.cpp.orig
-patch MegaUpdater.cpp </opt/scripts/vcpkg-mega-updater.patch
+patch MegaUpdater.cpp </scripts/vcpkg-mega-updater.patch
 
 # Determine triplet to use
 cd /MEGAcmd
