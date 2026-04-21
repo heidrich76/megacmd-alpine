@@ -5,12 +5,16 @@ on:
     tags:
       - "*"
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (optional)"
+        required: false
 
 permissions:
   contents: write
 
 env:
-  PREFIX: megacmd_alpine_${{ github.ref_name }}
+  PREFIX: megacmd_alpine_${{ github.event.inputs.version || github.ref_name }}
 
 jobs:
   build:
