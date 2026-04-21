@@ -3,7 +3,7 @@ name: Build Archives for MEGAcmd on Alpine
 on:
   push:
     tags:
-      - '*'
+      - "*"
   workflow_dispatch:
 
 permissions:
@@ -13,68 +13,61 @@ env:
   PREFIX: megacmd_alpine_${{ github.ref_name }}
 
 jobs:
-  build-arm64:
-    name: Build arm64 archive
-    runs-on: ubuntu-24.04-arm
+  build:
+    name: Build ${{ matrix.arch }} archive
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+            platform: linux/arm64
+            image_tag: arm64
+          - arch: x86_64
+            runner: ubuntu-24.04
+            platform: linux/amd64
+            image_tag: amd64
+
     steps:
       - uses: actions/checkout@v4
+
+      - name: Load build.env
+        shell: bash
+        run: |
+          set -a
+          source build.env
+          set +a
+          echo "VERSION=$MEGA_VERSION" >> "$GITHUB_ENV"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build image and extract artifact
+        shell: bash
         run: |
           docker build \
-            --platform linux/arm64 \
+            --platform "${{ matrix.platform }}" \
             --target final \
-            -t local/megacmd:arm64 .
+            -t "local/megacmd:${{ matrix.image_tag }}" .
 
-          container_id=$(docker create local/megacmd:arm64)
-          docker cp "$container_id:/packages/megacmd-2.5.2-r0.tar.gz" ./${PREFIX}_aarch64.tar.gz
-          docker cp "$container_id:/packages/megacmd-2.5.2-r0.apk" ./${PREFIX}_aarch64.apk
+          container_id=$(docker create "local/megacmd:${{ matrix.image_tag }}")
+          docker cp "$container_id:/packages/megacmd-${VERSION}-r0.tar.gz" "./${PREFIX}_${{ matrix.arch }}.tar.gz"
+          docker cp "$container_id:/packages/megacmd-${VERSION}-r0.apk" "./${PREFIX}_${{ matrix.arch }}.apk"
           docker rm "$container_id"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PREFIX }}_aarch64
+          name: ${{ env.PREFIX }}_${{ matrix.arch }}
           path: |
-            ${{ env.PREFIX }}_aarch64.tar.gz
-            ${{ env.PREFIX }}_aarch64.apk
-
-  build-amd64:
-    name: Build x64 archive
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build image and extract artifact
-        run: |
-          docker build \
-            --platform linux/amd64 \
-            --target final \
-            -t local/megacmd:amd64 .
-
-          container_id=$(docker create local/megacmd:amd64)
-          docker cp "$container_id:/packages/megacmd-2.5.2-r0.tar.gz" ./${PREFIX}_x86_64.tar.gz
-          docker cp "$container_id:/packages/megacmd-2.5.2-r0.apk" ./${PREFIX}_x86_64.apk
-          docker rm "$container_id"
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.PREFIX }}_x86_64
-          path: |
-            ${{ env.PREFIX }}_x86_64.tar.gz
-            ${{ env.PREFIX }}_x86_64.apk
+            ${{ env.PREFIX }}_${{ matrix.arch }}.tar.gz
+            ${{ env.PREFIX }}_${{ matrix.arch }}.apk
 
   release:
     name: Create GitHub Release
     runs-on: ubuntu-24.04
-    needs: [build-arm64, build-amd64]
+    needs: build
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
@@ -91,4 +84,3 @@ jobs:
             artifacts/${{ env.PREFIX }}_aarch64/${{ env.PREFIX }}_aarch64.apk
             artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.tar.gz
             artifacts/${{ env.PREFIX }}_x86_64/${{ env.PREFIX }}_x86_64.apk
-            
