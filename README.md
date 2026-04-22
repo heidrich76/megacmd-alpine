@@ -23,8 +23,8 @@ This includes the licensing terms of the original MEGA software.
   ```
 * Start GitHub build by tagging:
   ```bash
-  git tag -a v2.5.2b2 -m "Release v2.5.2 (Build 2)"
-  git push origin v2.5.2b2
+  git tag -a v2.5.2b3 -m "Release v2.5.2 (Build 3)"
+  git push origin v2.5.2b3
   ```
 
 
@@ -34,14 +34,14 @@ This includes the licensing terms of the original MEGA software.
 * Download and use installation packages `tag.gz`:
   ```bash
   apk add --no-cache fuse gcompat util-linux zstd && \
-    VERSION=v2.5.2b2 && \
+    VERSION=v2.5.2b3 && \
     BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
     wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
     tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
   ```
 * Download and use installation packages `apk`:
   ```bash
-  VERSION=v2.5.2b2 && \
+  VERSION=v2.5.2b3 && \
     BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
     wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).apk" -O /tmp/megacmd.apk && \
     apk add --no-cache --allow-untrusted /tmp/megacmd.apk
