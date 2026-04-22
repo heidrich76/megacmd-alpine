@@ -61,7 +61,7 @@ jobs:
           docker rm "$container_id"
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ env.PREFIX }}_${{ matrix.arch }}
           path: |
