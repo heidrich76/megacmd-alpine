@@ -10,6 +10,7 @@ Operating System: Linux in Alpine 3.23 container (tested on arm and x64 containe
 
 Build: Own MEGAcmd build using on Alpine Linux (see https://github.com/heidrich76/megacmd-alpine)
 
+
 ### Description / Steps
 
 - Create a folder in MEGA cloud containing larger amounts of data
@@ -33,14 +34,19 @@ Build: Own MEGAcmd build using on Alpine Linux (see https://github.com/heidrich7
 - XcTsQ6co7Fo /test /Test Running Pending NO 50.10 MB 7 2 *data moved to Rubbish folder in cloud*
 - XcTsQ6co7Fo /test /Test Running Synced NO 50.10 MB 7 2
 
+
 ### Observation
 
 Calling mega-sync while status of newly added pair is "Pending" seems to cause the problem.
 MEGAcmd creates local folders, which contain no files. When starting the synchronization process, the empty folders are synchronized back to the cloud, which causes the files to be moved to the Rubbish folder in the cloud drive.
 Unfortunately the issue is hard to reproduce. I made the experiment multiple times and could reproduce the results with several runs.
 
+Tested versions from 2.1.1 to 2.5.2 on Alpine (own builds) and 2.5.2.1 (code 2050201) on Ubuntu 22.04 (standard apt package). The behavior is reproduceable in all those settings. In my tests, one out of three tests failed and files were moved to the Rubbish folder.
 
-### Testing unter Alpine
+During normal usage in the shell, it does not really matter, as there enough time between adding a sync pair and calling mega-sync again. However, as I'm working on a UI with automatic refresh, I stumbled across this behavior and it may cause data loss, if not immediately discovered for restoring data from the rubbish folder.
+
+
+## Testing unter Alpine
 
 1. Start container:
 ```bash
