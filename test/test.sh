@@ -1,3 +1,9 @@
 #!/bin/bash
+ts() { date "+[%Y-%m-%d %H:%M:%S.%3N]"; }
+
+ts
 mega-sync /test /Test
-for i in {1..30}; do date "+[%Y-%m-%d %H:%M:%S]"; sleep 0.1; mega-sync; done
+mega-sync
+sleep 5
+ts
+mega-sync

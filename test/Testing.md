@@ -13,15 +13,14 @@ Build: Own MEGAcmd build using on Alpine Linux (see https://github.com/heidrich7
 
 ### Description / Steps
 
-- Create a folder in MEGA cloud containing larger amounts of data
+- Create a folder `Test` in MEGA cloud containing some larger files in a subfolder
+- Create a local folder `/test` as synchronization target
 - Create a script calling mega-sync directly after adding the folder, e.g.:
   ```bash
   mega-sync /test /Test
   mega-sync
-  mega-sync
-  mega-sync
   ```
-- Keep calling mega-sync
+- Wait a bit and call `mega-sync` again
 - Some files in the cloud will be moved to the Rubbish folder and folder will only be synchronized partially.
 
 
@@ -65,7 +64,12 @@ uuidgen > /etc/machine-id
 
 3. Login to MEGA: `mega-login`
 
-4. Create folder `/Test` in MEGA cloud and store some larger chunks of data there
+4. Create folder `/Test` in MEGA cloud and store some data in a sub-folder, e.g. `folder`:
+```bash
+for i in {1..5}; do
+  curl -o test_$i.bin https://speed.cloudflare.com/__down?bytes=1000000
+done
+```
 
 5. Run tests several time until data is moved to Rubbish folder:
 ```bash
@@ -78,28 +82,34 @@ uuidgen > /etc/machine-id
 
 1. Start container:
 ```bash
-docker run -it --rm -v .:/workspace -w /workspace ubuntu:22.04 bash
+docker run -it --rm -v .:/workspace -w /workspace ubuntu:24.04 bash
 ```
 
 2. Install MEGAcmd:
 ```bash
 apt update
-apt install -y wget gnupg
-
-wget -qO - https://mega.nz/linux/repo/xUbuntu_22.04/Release.key | gpg --dearmor > /usr/share/keyrings/megacmd.gpg
-echo "deb [signed-by=/usr/share/keyrings/megacmd.gpg] https://mega.nz/linux/repo/xUbuntu_22.04/ ./" > /etc/apt/sources.list.d/megacmd.list
-
-apt update
-apt install -y uuid-runtime megacmd
+apt install wget uuid-runtime
+arch=$(uname -m)
+case "$arch" in
+  x86_64) pkg_arch=amd64 ;;
+  aarch64) pkg_arch=arm64 ;;
+esac
+wget "https://mega.nz/linux/repo/xUbuntu_24.04/${pkg_arch}/megacmd-xUbuntu_24.04_${pkg_arch}.deb" -O megacmd.deb
+apt install -y ./megacmd.deb && rm -rf ./megacmd.deb
 uuidgen > /etc/machine-id
 ```
 
 3. Login to MEGA: `mega-login`
 
-4. Create folder `/Test` in MEGA cloud and store some larger chunks of data there
+4. Create folder `/Test` in MEGA cloud and store some data in a sub-folder, e.g. `folder`:
+```bash
+for i in {1..5}; do
+  curl -o test_$i.bin https://speed.cloudflare.com/__down?bytes=1000000
+done
+```
 
 5. Run tests several time until data is moved to Rubbish folder:
 ```bash
-./test.-reset.sh
-./test
+./test-reset.sh
+./test.sh
 ```
