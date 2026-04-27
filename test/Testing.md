@@ -101,7 +101,7 @@ uuidgen > /etc/machine-id
 
 3. Login to MEGA: `mega-login`
 
-4. Create folder `/Test` in MEGA cloud and store some data in a sub-folder, e.g. `folder`:
+4. Create folder `/Test` in MEGA cloud and store some data in a sub-folder, e.g. `folder` (using another machine or via MEGA web client):
 ```bash
 for i in {1..5}; do
   curl -o test_$i.bin https://speed.cloudflare.com/__down?bytes=1000000
@@ -113,3 +113,13 @@ done
 ./test-reset.sh
 ./test.sh
 ```
+
+
+## Further Observations
+
+- Behavior could not be reproduced when running directly on bare metal!
+- All my previous tests were performed on containers running Ubuntu or Alpine Linux.
+- There, the behavior can perfectly be reproduced running the containers on any ARM or AMD hardware.
+- Even though `mega-sync` without arguments should do no harm, it seems to somehow disturb the synchronization process when run instantly after adding a new pair.
+- This also works with fairly small file sizes. However, in my tests it only happened when those files were contained in some sub-folder and not placed directly in the synchronization root folder.
+- Moreover, it is also not required to constantly polling status with `mega-sync`. It is sufficient to directly call `mega-sync` after adding a new pair once and then wait a couple of seconds for the behavior to occur. 
