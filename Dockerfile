@@ -1,5 +1,5 @@
 # Basis for running application
-FROM alpine:3.23 AS base
+FROM alpine:3.24 AS base
 COPY scripts /scripts
 COPY build.env /scripts
 COPY LICENSE /scripts

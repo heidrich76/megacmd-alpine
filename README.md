@@ -18,7 +18,7 @@ Certain versions of MEGAcmd (tested from 2.1.1 to 2.5.2) contain a bug that can 
 
 * Build image and start container:
   ```bash
-  docker-compose up --build -d
+  docker compose up --build -d
   ```
 * Start shell in container:
   ```bash
@@ -26,8 +26,8 @@ Certain versions of MEGAcmd (tested from 2.1.1 to 2.5.2) contain a bug that can 
   ```
 * Start GitHub build by tagging:
   ```bash
-  git tag -a v2.5.2b4 -m "Release v2.5.2 (Build 4)"
-  git push origin v2.5.2b4
+  git tag -a v2.7.1b1 -m "Release v2.7.1 (Build 1)"
+  git push origin v2.7.1b1
   ```
 
 

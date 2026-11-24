@@ -13,6 +13,9 @@ export PATH="/usr/lib/ninja-build/bin:$PATH"
 # Avoid deprecation warnings
 export CXXFLAGS="-Wno-deprecated-declarations"
 
+# Use systemn binaries to avoid issues with musl
+export VCPKG_FORCE_SYSTEM_BINARIES=1
+
 # Clone VCPKG source code und bootstrap app
 git clone --branch "$VCPKG_TAG" --single-branch https://github.com/microsoft/vcpkg.git /vcpkg
 cd /vcpkg && ./bootstrap-vcpkg.sh
