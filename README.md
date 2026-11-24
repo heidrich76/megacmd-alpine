@@ -10,7 +10,7 @@ The license for these archives is available at `usr/share/licenses/megacmd/` for
 This includes the licensing terms of the original MEGA software.
 
 ## Critical Warning (MEGAcmd sync issue)
-Certain versions of MEGAcmd (tested from 2.1.1 to 2.5.2) contain a bug that can **unexpectedly move your cloud files to the Rubbish bin**. This may occur if `mega-sync` is executed immediately after adding a new sync pair while its state is still *Pending*. Recommendation: Avoid calling `mega-sync` immediately after creating a sync and wait a couple of seconds. See details: [https://github.com/meganz/MEGAcmd/issues/1121](https://github.com/meganz/MEGAcmd/issues/1121). Steps to reproduce under Alpine und Ubuntu can be found [here](./test/Testing.md)
+Certain versions of MEGAcmd (tested from 2.1.1 to 2.7.1) contain a bug that can **unexpectedly move your cloud files to the Rubbish bin**. This may occur if `mega-sync` is executed immediately after adding a new sync pair while its state is still *Pending*. Recommendation: Avoid calling `mega-sync` immediately after creating a sync and wait a couple of seconds. See details: [https://github.com/meganz/MEGAcmd/issues/1121](https://github.com/meganz/MEGAcmd/issues/1121). Steps to reproduce under Alpine und Ubuntu can be found [here](./test/Testing.md)
 
 
 

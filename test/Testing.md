@@ -4,9 +4,9 @@ Calling mega-sync directly after adding sync pair causes data moved to Rubbish f
 
 ## Description of Issue
 
-MEGAcmd version: 2.1.1 to 2.5.2
+MEGAcmd version: 2.1.1 to 2.7.1
 
-Operating System: Linux in Alpine 3.23 container (tested on arm and x64 containers)
+Operating System: Linux in Alpine 3.24 container (tested on arm and x64 containers)
 
 Build: Own MEGAcmd build using on Alpine Linux (see https://github.com/heidrich76/megacmd-alpine)
 
@@ -40,7 +40,7 @@ Calling mega-sync while status of newly added pair is "Pending" seems to cause t
 MEGAcmd creates local folders, which contain no files. When starting the synchronization process, the empty folders are synchronized back to the cloud, which causes the files to be moved to the Rubbish folder in the cloud drive.
 Unfortunately the issue is hard to reproduce. I made the experiment multiple times and could reproduce the results with several runs.
 
-Tested versions from 2.1.1 to 2.5.2 on Alpine (own builds) and 2.5.2.1 (code 2050201) on Ubuntu 22.04 (standard apt package). The behavior is reproduceable in all those settings. In my tests, one out of three tests failed and files were moved to the Rubbish folder.
+Tested versions from 2.1.1 to 2.7.1 on Alpine (own builds) and 2.7.1 on Ubuntu 26.10 (standard apt package). The behavior is reproduceable in all those settings. In my tests, one out of three tests failed and files were moved to the Rubbish folder.
 
 During normal usage in the shell, it does not really matter, as there enough time between adding a sync pair and calling mega-sync again. However, as I'm working on a UI with automatic refresh, I stumbled across this behavior and it may cause data loss, if not immediately discovered for restoring data from the rubbish folder.
 
@@ -49,13 +49,13 @@ During normal usage in the shell, it does not really matter, as there enough tim
 
 1. Start container:
 ```bash
-docker run -it --rm -v .:/workspace -w /workspace alpine:3.23 bash
+docker run -it --rm -v .:/workspace -w /workspace alpine:3.24 bash
 ```
 
 2. Install MEGAcmd:
 ```bash
 apk add --no-cache fuse gcompat util-linux zstd && \
-  VERSION=v2.5.2b3 && \
+  VERSION=v2.7.1b1 && \
   BASE_URL=https://github.com/heidrich76/megacmd-alpine/releases/download/$VERSION && \
   wget "$BASE_URL/megacmd_alpine_${VERSION}_$(uname -m).tar.gz" -O /tmp/megacmd.tar.gz && \
   tar -xzf /tmp/megacmd.tar.gz -C / && rm /tmp/megacmd.tar.gz
@@ -82,7 +82,7 @@ done
 
 1. Start container:
 ```bash
-docker run -it --rm -v .:/workspace -w /workspace ubuntu:24.04 bash
+docker run -it --rm -v .:/workspace -w /workspace ubuntu:26.10 bash
 ```
 
 2. Install MEGAcmd:
@@ -94,7 +94,7 @@ case "$arch" in
   x86_64) pkg_arch=amd64 ;;
   aarch64) pkg_arch=arm64 ;;
 esac
-wget "https://mega.nz/linux/repo/xUbuntu_24.04/${pkg_arch}/megacmd-xUbuntu_24.04_${pkg_arch}.deb" -O megacmd.deb
+wget "https://mega.nz/linux/repo/xUbuntu_26.10/${pkg_arch}/megacmd-xUbuntu_26.10_${pkg_arch}.deb" -O megacmd.deb
 apt install -y ./megacmd.deb && rm -rf ./megacmd.deb
 uuidgen > /etc/machine-id
 ```
